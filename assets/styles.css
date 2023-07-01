@@ -1,0 +1,45 @@
+body{
+   background-color:#606C5D;
+
+}
+h1.header{
+    color: #F7E6C4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 6rem;
+    font-family:'Lobster',cursive;
+    font-size: 7rem;
+    
+
+}
+div.result{
+    font-family:'Lobster';
+    color:#F1C27B ;
+    text-align: center;
+    font-size: 2rem;
+}
+div.outerbox{
+    height: 50%;
+    /* background-color: aliceblue; */
+    display: flex;
+    flex: row;
+    text-align: center;
+    justify-content:center;
+    font-family:'Indie Flower' ;
+    font-size: larger;
+    box-shadow: #F7E6C4;
+    flex-basis: 600px;
+    
+}
+div.innerbox{
+    width: 30%;
+    height: 100%;
+}
+
+@media (max-width :600px) {
+    div.outerbox{
+        flex-direction: column;
+    }
+    
+}
