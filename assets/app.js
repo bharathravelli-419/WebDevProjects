@@ -1,25 +1,84 @@
 
 
-var randomNumber1 = Math.floor(Math.random()*6) +1;
+var button = document.querySelectorAll(".drum");
 
-var randomNumber2 = Math.floor(Math.random()*6) +1;
 
-console.log(randomNumber1,randomNumber2)
-var res ='';
-if(randomNumber1>randomNumber2)
-res ="Player 1 Wins the game";
-else if(randomNumber1<randomNumber2)
-res ='Player 2 Wins the game';
-else 
-res = 'Match is Drawn Between the Players'
 
-console.log(res);
-document.querySelector(".result h2").innerHTML=res;
- 
-var str1 = 'assets\\images\\dice' + randomNumber1 + '.png';
+for(var i=0;i<7;i++)
+{
+button[i].addEventListener("click",(event)=>{
+    var but = event.target.innerHTML;
+    makeSound(but);
+    anim(but);
+    
 
-var str2 = 'assets\\images\\dice' + randomNumber2 + '.png';
 
-document.querySelector(".p1").setAttribute("src",str1);
+});
 
-document.querySelector(".p2").setAttribute("src",str2);
+}
+
+document.addEventListener('keyup',(event)=>{
+    makeSound(event.key);
+    anim(event.key);
+})
+
+
+
+
+makeSound =(but)=>{
+
+    console.log(but);
+    switch(but){
+        case "w":
+            var audio = new Audio("assets/sounds/tom-1.mp3");
+            audio .play();
+            break;
+
+        case "a":
+            var audio = new Audio("assets/sounds/tom-2.mp3");
+            audio.play();
+            break;
+
+        case "s":
+            var audio = new Audio("assets/sounds/tom-3.mp3");
+            audio.play();
+            break;
+
+        case "d":
+            var audio= new Audio("assets/sounds/tom-4.mp3");
+            audio.play();
+            break;
+        
+        case "j":
+            var audio= new Audio("assets/sounds/snare.mp3");
+            audio.play();
+            break;
+
+        case "k":
+            var audio = new Audio("assets/sounds/crash.mp3");
+            audio.play();
+            break;
+
+        case "l":
+            var audio = new Audio("assets/sounds/kick-bass.mp3");
+            audio.play();
+            break;
+            
+        default:
+            console.log(but);
+    }
+
+
+
+
+}
+
+function anim(a){
+
+    var activeButton = document.querySelector("."+a);
+    activeButton.classList.add('press');
+    setTimeout(()=>{
+        activeButton.classList.remove('press')
+    },100)
+
+}

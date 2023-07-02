@@ -1,9 +1,6 @@
-This is Dice Game Project using simple HTML DOM .
+Drums Play
+This is Drums Playing Website which is built using HTML CSS and DOM Manipulations
 
-About the Game : 
+Functions:
 
-1.This is the a Luck Based game having two players.
-
-2.The player who gets the higher number on the dice wins the game.If both gets the same number ,then game is tied.
-
-3.We need to refresh tha page to get the result.Which means each time we hit the refresh button, the the dice numbers change.
+Each time you click a button with a drum image inside of it, It produces sound according to it
