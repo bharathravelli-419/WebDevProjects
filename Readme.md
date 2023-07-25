@@ -1,5 +1,5 @@
 Description:
-This is Webiste for writing blogs. I Haven't linked to any Database but as soon as I restart the server, the content wipes out.The dinamice content which is generated after posting is completed with the help of EJS( Embedded JavaScript).
+This is Webiste for writing blogs. I Have linked to Database .So, as soon as I restart the server, the content doesn't wipe out.The dynamic content which is generated after posting the content.
 
 
-Teck Stack: Node.js, Express.js, Bootstrap
+Teck Stack: Node.js, Express.js, Bootstrap,MongoDB Atlas

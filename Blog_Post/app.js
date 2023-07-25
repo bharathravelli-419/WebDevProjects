@@ -2,8 +2,38 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const ejs = require('ejs');
 const _ = require('lodash');
+const mongoose = require('mongoose');
 const app = express();
-var posts=[];
+
+
+
+
+//connecting to mongoDB atlas using the connections string
+const main = async()=>{
+      try{
+        await mongoose.connect("mongodb+srv://bharathravelli419:Vijayalakshmi@cluster1.wyjlnxu.mongodb.net/my-db?retryWrites=true&w=majority",
+        {
+            useNewUrlParser: true,
+            // useFindAndModify: false,
+            useUnifiedTopology: true
+          } 
+
+        );
+        console.log("Connected Successfully");
+      }
+      catch(err){
+        console.log(err+ " error while connecting...");
+      }
+}
+
+const postSchema = new mongoose.Schema({
+    title:String,
+    title_compressed:String,
+    content:String
+})
+
+const Post = mongoose.model("Post",postSchema);
+
 
 
 const homeStartingContent = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis numquam suscipit eveniet quod, sit voluptas doloribusoluptatum. Quam, quis?';
@@ -18,83 +48,54 @@ app.use(express.static('public'))
 
 app.set('view engine','ejs');
 
-app.get("/",(req,res)=>{
+app.get("/",async (req,res)=>{
+
+    const recordsInDB = await Post.find({});
     
-    res.render('home',{StartingContent:homeStartingContent,posts:posts});
-    // res.render('home',{StartingContent:StartingContent,heading:heading});
+    res.render('home',{StartingContent:homeStartingContent,posts:recordsInDB});
+ 
 
 })
 
-// app.get('/home',(req,res)=>{
-//     // heading ='Home';
-//     // StartingContent = homeStartingContent;
-//     // res.redirect('/');
-//     res.render('')
-// })
+
 app.get('/about',(req,res)=>{
-    // StartingContent= aboutContent;
-    // heading='About'
-    // res.redirect('/');
+  
     res.render('about',{aboutContent:aboutContent});
 })
 app.get('/contact',(req,res)=>{
-    // StartingContent= ContactUs;
-    // heading= 'Contact Us';
-    // res.redirect('/');
+    
   res.render('contact',{contactContent:ContactUs});
 })
 
 app.get('/compose',(req,res)=>{
     res.render('compose');
 })
-app.post('/compose',(req,res)=>{
-   // console.log(req.body.posting);
+app.post('/compose',async (req,res)=>{
 
-    const postObject ={
-        postTitle: req.body.postTitle,
-        postBody :req.body.postBody
-    }
-   posts.push(postObject);
-   console.log(posts);
+   const newPost = new Post({
+     title: req.body.postTitle,
+     title_compressed: _.camelCase(req.body.postTitle),
+     content: req.body.postBody
+   })
+   await newPost.save();
    res.redirect('/');
 
 })
-// app.get('/posts/:str',(req,res)=>{
-//     //console.log(req.params.str);
-//     for(var i =0;i<posts.length;i++){
-//         var str1 = _.camelCase(posts[i].postTitle);
-//         var str2 = _.camelCase( req.params.str);
-//         if(str1 === str2)
-//         {
-//            var flag = true;
-//            res.render('postsPage',{
-//             postHeading: posts[i].postTitle,
-//             postPara: posts[i].postBody
-//         })
 
-//         }
-//     }
-//     if(flag == false)
-//     res.redirect('/');
+
+app.get('/posts/:str', async (req, res) => {
+    var str2 = (req.params.str);
+
+   try{
+    const record = await Post.findOne({title_compressed:str2}).exec();
+    // console.log(record,typeof(record));
     
-// })
+     res.render('postsPage',{postHeading:record.title,postPara:record.content});
+   }
+   catch(err){
+    res.redirect("/");
+   }
 
-app.get('/posts/:str', (req, res) => {
-    var str2 = _.camelCase(req.params.str);
-    var post = posts.find((post) => {
-        var str1 = _.camelCase(post.postTitle);
-        return str1 === str2;
-    });
-
-    if (post) {
-        res.render('postsPage', {
-            postHeading: post.postTitle,
-            postPara: post.postBody
-        });
-    } else {
-        // Handle case when no matching post is found
-        res.send('Post not found');
-    }
 });
 
 app.listen(process.env.PORT || 3000,(err)=>{
@@ -103,3 +104,8 @@ app.listen(process.env.PORT || 3000,(err)=>{
     else
     console.log('server running successfully');
 })
+
+main();
+
+
+

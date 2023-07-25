@@ -8,13 +8,15 @@
     <p><%=StartingContent %></p>
 
     
-    <% posts.forEach((post)=>{%>
+    <form action="">
+        <% for(var i =0;i< posts.length;i++){%>
 
-        <h3><%= post.postTitle %></h3>
-        <p> <%= post.postBody.substring(0,50)+" ..." %> <a href="/posts/<%=post.postTitle%>">Read more</a></p>
+            <h3><%= posts[i].title %></h3>
+            <p> <%= posts[i].content.substring(0,50)+" ..." %> <a href="/posts/<%=posts[i].title_compressed%>">Read more</a></p>
+            
     
-
-    <% }); %>
+        <% }%>
+    </form>
 
 
 </div>
